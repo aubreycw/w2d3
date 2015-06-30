@@ -43,15 +43,19 @@ end
 # end
 
 board = Board.new
-rook = Rook.new([2, 2], board, :black)
-bk1 = Knight.new([0, 2], board, :black)
-wk1 = Knight.new([2, 5], board, :white)
-wk2 = Knight.new([3, 2], board, :white)
-king = King.new([7, 2], board, :white)
+p1 = Knight.new([2, 2], board, :black)
+queen = Queen.new([3, 3], board, :black)
+p2 = Knight.new([4, 4], board, :white)
+k1 = Knight.new([0, 0], board, :white)
+p3 = Knight.new([1, 5], board, :white)
+p4 = Knight.new([3, 6], board, :white)
+king = King.new([6, 6], board, :white)
 
-board[[2, 2]] = rook
-board[[0, 2]] = bk1
-board[[2, 5]] = wk1
-board[[3, 2]] = wk2
-board[[7, 2]] = king
-p rook.moves
+board[[3,3]]= queen
+board[[2,2]]= p1
+board[[4,4]]= p2
+board[[1,5]]= p3
+board[[3,6]] = p4
+board[[0,0]]= k1
+board[[6,6]]= king
+p queen.moves

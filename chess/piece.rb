@@ -29,6 +29,6 @@ class Piece
   end
 
   def enemy?(pos)
-    board[pos].color != self.color
+    move_on_board?(pos) && board[pos].color != self.color
   end
 end

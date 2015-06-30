@@ -14,7 +14,7 @@ class SlidingPiece < Piece
       row, col = pos
       new_pos = [row + drow, col + dcol]
 
-      until !board[new_pos].empty?
+      while move_on_board?(new_pos) && board[new_pos].empty?
         all_moves << new_pos                  # for empty squares
         row, col = new_pos
         new_pos = [row + drow, col + dcol]
@@ -29,8 +29,20 @@ class SlidingPiece < Piece
 end
 
 class Rook < SlidingPiece
-
   def move_diffs
     [[0, 1], [0, -1], [1, 0], [-1, 0]]
+  end
+end
+
+class Bishop < SlidingPiece
+  def move_diffs
+    [[1, 1], [1, -1], [-1, 1], [-1, -1]]
+  end
+end
+
+class Queen < SlidingPiece
+  def move_diffs
+    [[1, 1], [1, -1], [-1, 1], [-1, -1],
+     [0, 1], [0, -1], [1, 0], [-1, 0]]
   end
 end
