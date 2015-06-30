@@ -9,9 +9,9 @@ class SteppingPiece < Piece
     all_moves = []
 
     self.move_diffs.each do |diff|
-      dx, dy = diff
+      drow, dcol = diff
       row, col = pos
-      all_moves << [row + dx, col + dy]
+      all_moves << [row + drow, col + dcol]
     end
 
     all_moves.select { |move| self.valid_move?(move) }

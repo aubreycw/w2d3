@@ -43,5 +43,15 @@ end
 # end
 
 board = Board.new
-knight = Knight.new([4,4],board,:white)
-puts knight.moves.to_s
+rook = Rook.new([2, 2], board, :black)
+bk1 = Knight.new([0, 2], board, :black)
+wk1 = Knight.new([2, 5], board, :white)
+wk2 = Knight.new([3, 2], board, :white)
+king = King.new([7, 2], board, :white)
+
+board[[2, 2]] = rook
+board[[0, 2]] = bk1
+board[[2, 5]] = wk1
+board[[3, 2]] = wk2
+board[[7, 2]] = king
+p rook.moves

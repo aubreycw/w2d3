@@ -25,6 +25,10 @@ class Piece
   end
 
   def square_available?(pos)
-    @board[pos].empty? || @board[pos].color != self.color
+    board[pos].empty? || enemy?(pos)
+  end
+
+  def enemy?(pos)
+    board[pos].color != self.color
   end
 end
