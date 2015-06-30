@@ -7,14 +7,14 @@ class SteppingPiece < Piece
 
   def moves
     all_moves = []
+    row, col = pos
 
-    self.move_diffs.each do |diff|
-      drow, dcol = diff
-      row, col = pos
-      all_moves << [row + drow, col + dcol]
+    self.move_diffs.each do |drow, dcol|
+      new_move = [row + drow, col + dcol]
+      all_moves << new_move if valid_move?(new_move)
     end
 
-    all_moves.select { |move| self.valid_move?(move) }
+    all_moves
   end
 end
 
@@ -38,14 +38,16 @@ class Knight < SteppingPiece
     super
   end
 
+  # make a constant; just hardcode it
   def move_diffs
     all_moves = []
-    [1,-1].each do |x|
-      [2,-2].each do |y|
+    [1, -1].each do |x|
+      [2, -2].each do |y|
         all_moves << [x, y]
         all_moves << [y, x]
       end
     end
+
     all_moves
   end
 

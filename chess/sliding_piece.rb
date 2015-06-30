@@ -9,40 +9,33 @@ class SlidingPiece < Piece
   def moves
     all_moves = []
 
-    self.move_diffs.each do |diff|
-      drow, dcol = diff
+    self.class::MOVE_DIFFS.each do |drow, dcol|
       row, col = pos
       new_pos = [row + drow, col + dcol]
 
       while move_on_board?(new_pos) && board[new_pos].empty?
-        all_moves << new_pos                  # for empty squares
         row, col = new_pos
+        all_moves << new_pos if valid_move?(new_pos)     # for empty squares
         new_pos = [row + drow, col + dcol]
       end
 
       all_moves << new_pos if enemy?(new_pos) # for squares containing an enemy
     end
 
-    all_moves.select { |move| valid_move?(move) }
+    all_moves
   end
 
 end
 
 class Rook < SlidingPiece
-  def move_diffs
-    [[0, 1], [0, -1], [1, 0], [-1, 0]]
-  end
+  MOVE_DIFFS = [[0, 1], [0, -1], [1, 0], [-1, 0]]
 end
 
 class Bishop < SlidingPiece
-  def move_diffs
-    [[1, 1], [1, -1], [-1, 1], [-1, -1]]
-  end
+  MOVE_DIFFS = [[1, 1], [1, -1], [-1, 1], [-1, -1]]
 end
 
 class Queen < SlidingPiece
-  def move_diffs
-    [[1, 1], [1, -1], [-1, 1], [-1, -1],
+  MOVE_DIFFS = [[1, 1], [1, -1], [-1, 1], [-1, -1],
      [0, 1], [0, -1], [1, 0], [-1, 0]]
-  end
 end

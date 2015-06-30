@@ -2,10 +2,10 @@ require_relative 'player'
 require_relative 'board'
 
 class ChessGame
-  def initialize
 
+  def initialize(player1 = Player.new(:white), player2 = Player.new(:black)])
     @chessboard = Board.new
-    @players = [Player.new(:white), Player.new(:black)]
+    @players = [player1, player2]
     #TODO: save/load functionality
   end
 
