@@ -44,14 +44,14 @@ class Board
 
   def render
     rank = 1
+
     @grid.each do |row|
       print rank.to_s + " "
-      row.each do |elem|
-        print elem.to_s + " "
-      end
+      row.each { |elem| print elem.to_s + " " }
       puts
       rank += 1
     end
+
     puts "  a b c d e f g h"
   end
 
