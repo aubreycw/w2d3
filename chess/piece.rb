@@ -1,3 +1,5 @@
+require 'colorize'
+
 class Piece
   attr_reader :color, :board, :pos
 
@@ -11,9 +13,16 @@ class Piece
     false
   end
 
+  def king?
+    false
+  end
+
+  def to_s
+    self.id.colorize(color)
+  end
+
   def moves
     raise "moves not implemented"
-    # valid_move?
   end
 
   protected

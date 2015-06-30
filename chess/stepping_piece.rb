@@ -9,7 +9,7 @@ class SteppingPiece < Piece
     all_moves = []
     row, col = pos
 
-    self.move_diffs.each do |drow, dcol|
+    self.class::MOVE_DIFFS.each do |drow, dcol|
       new_move = [row + drow, col + dcol]
       all_moves << new_move if valid_move?(new_move)
     end
@@ -20,35 +20,28 @@ end
 
 
 class King < SteppingPiece
-  def initialize(pos, board, color)
-    super
-  end
-
-  def move_diffs
-    [
+  MOVE_DIFFS = [
       [-1, -1], [-1, 0], [-1, 1],
       [ 0, -1],          [ 0, 1],
       [ 1, -1], [ 1, 0], [ 1, 1]
     ]
-  end
+
+    def initialize
+      super
+      @id = ♔
+    end
+
+    def king?
+      true
+    end
 end
 
 class Knight < SteppingPiece
-  def initialize(pos, board, color)
+  MOVE_DIFFS = [[1, 2], [1, -2], [-1, 2], [-1, -2],
+                [2, 1], [2, -1], [-2, 1], [-2, -1]]
+
+  def initialize
     super
+    @id = ♘
   end
-
-  # make a constant; just hardcode it
-  def move_diffs
-    all_moves = []
-    [1, -1].each do |x|
-      [2, -2].each do |y|
-        all_moves << [x, y]
-        all_moves << [y, x]
-      end
-    end
-
-    all_moves
-  end
-
 end
