@@ -1,3 +1,6 @@
+require_relative 'player'
+require_relative 'board'
+
 class ChessGame
   def initialize
 
@@ -34,7 +37,11 @@ class ChessGame
 end
 
 
-if __FILE__ == $PROGRAM_NAME
-  puts "Welcome to Chess!"
-  ChessGame.new.play
-end
+# if __FILE__ == $PROGRAM_NAME
+#   puts "Welcome to Chess!"
+#   ChessGame.new.play
+# end
+
+board = Board.new
+knight = Knight.new([4,4],board,:white)
+puts knight.moves.to_s

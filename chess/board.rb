@@ -1,9 +1,14 @@
+require_relative 'empty_square'
+require_relative 'piece'
+require_relative 'sliding_piece'
+require_relative 'stepping_piece'
+
 class Board
   attr_accessor :grid
 
   def initialize
     @grid = Array.new(8) {Array.new(8) { EmptySquare.new } }
-    populate_grid
+    #populate_grid
   end
   def populate_grid
     # instantiates squares with the proper chess pieces
@@ -28,7 +33,5 @@ class Board
     row, col = pos
     @grid[row][col] = input
   end
-
-
 
 end
