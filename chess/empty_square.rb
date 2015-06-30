@@ -1,0 +1,3 @@
+class EmptySquare
+  
+end
