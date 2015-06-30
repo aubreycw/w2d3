@@ -1,9 +1,12 @@
+require_relative 'piece'
+
 class Pawn < Piece
+  attr_reader :id
 
   def initialize(pos, board, color)
     super
     @moved = false
-    @id = ♙
+    @id = "♙"
   end
 
   def moves

@@ -26,9 +26,9 @@ class King < SteppingPiece
       [ 1, -1], [ 1, 0], [ 1, 1]
     ]
 
-    def initialize
+    def initialize(pos, board, color)
       super
-      @id = ♔
+      @id = "♔"
     end
 
     def king?
@@ -40,8 +40,8 @@ class Knight < SteppingPiece
   MOVE_DIFFS = [[1, 2], [1, -2], [-1, 2], [-1, -2],
                 [2, 1], [2, -1], [-2, 1], [-2, -1]]
 
-  def initialize
+  def initialize(pos, board, color)
     super
-    @id = ♘
+    @id = "♘"
   end
 end

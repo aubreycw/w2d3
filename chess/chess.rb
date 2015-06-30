@@ -3,7 +3,8 @@ require_relative 'board'
 
 class ChessGame
 
-  def initialize(player1 = Player.new(:white), player2 = Player.new(:black)])
+  def initialize(player1 = Player.new(:white),
+                 player2 = Player.new(:black))
     @chessboard = Board.new
     @players = [player1, player2]
     #TODO: save/load functionality
@@ -43,19 +44,20 @@ end
 # end
 
 board = Board.new
-p1 = Knight.new([2, 2], board, :black)
-queen = Queen.new([3, 3], board, :black)
-p2 = Knight.new([4, 4], board, :white)
-k1 = Knight.new([0, 0], board, :white)
-p3 = Knight.new([1, 5], board, :white)
-p4 = Knight.new([3, 6], board, :white)
-king = King.new([6, 6], board, :white)
-
-board[[3,3]]= queen
-board[[2,2]]= p1
-board[[4,4]]= p2
-board[[1,5]]= p3
-board[[3,6]] = p4
-board[[0,0]]= k1
-board[[6,6]]= king
-p queen.moves
+board.render
+# p1 = Knight.new([2, 2], board, :black)
+# queen = Queen.new([3, 3], board, :black)
+# p2 = Knight.new([4, 4], board, :white)
+# k1 = Knight.new([0, 0], board, :white)
+# p3 = Knight.new([1, 5], board, :white)
+# p4 = Knight.new([3, 6], board, :white)
+# king = King.new([6, 6], board, :white)
+#
+# board[[3,3]]= queen
+# board[[2,2]]= p1
+# board[[4,4]]= p2
+# board[[1,5]]= p3
+# board[[3,6]] = p4
+# board[[0,0]]= k1
+# board[[6,6]]= king
+# p queen.moves

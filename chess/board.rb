@@ -1,7 +1,8 @@
 require_relative 'empty_square'
-require_relative 'piece'
 require_relative 'sliding_piece'
 require_relative 'stepping_piece'
+require_relative 'pawn'
+
 
 class Board
   attr_accessor :grid
@@ -42,12 +43,16 @@ class Board
   end
 
   def render
+    rank = 1
     @grid.each do |row|
+      print rank.to_s + " "
       row.each do |elem|
-        print elem.to_s
+        print elem.to_s + " "
       end
       puts
+      rank += 1
     end
+    puts "  a b c d e f g h"
   end
 
   def [](pos)
