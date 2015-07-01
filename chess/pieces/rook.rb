@@ -4,7 +4,7 @@ class Rook < SlidingPiece
   MOVE_DIFFS = [[0, 1], [0, -1], [1, 0], [-1, 0]]
 
   def initialize(pos, board, color, moved = false)
-    super
+    super(pos, board, color)
     @id = "♖"
     @moved = moved
   end
@@ -13,5 +13,5 @@ class Rook < SlidingPiece
     super
     @moved = true
   end
-  
+
 end

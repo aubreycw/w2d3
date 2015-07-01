@@ -8,7 +8,7 @@ class King < SteppingPiece
     ]
 
     def initialize(pos, board, color, moved = false)
-      super
+      super(pos, board, color)
       @id = "♔"
       @moved = moved
     end
