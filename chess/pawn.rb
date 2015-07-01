@@ -1,7 +1,8 @@
 require_relative 'piece'
 
 class Pawn < Piece
-  attr_reader :pos, :board, :color, :moved
+  attr_reader :board, :color
+  attr_accessor :pos, :moved
 
   def initialize(pos, board, color, moved = false)
     super(pos, board, color)
@@ -45,8 +46,6 @@ class Pawn < Piece
 
     moveset.each do |drow, dcol|
       new_pos = [row + drow, col + dcol]
-      p "#{new_pos}: empty? #{board[pos].empty?}"
-      p "move on board? #{move_on_board?(pos)}"
       if board[new_pos].empty? && move_on_board?(new_pos) #can't use legal_move?
         all_moves << new_pos
       end

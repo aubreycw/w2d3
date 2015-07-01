@@ -87,7 +87,6 @@ class Board
   end
 
   def print_elem(elem, ridx, cidx)
-
     if cursor_pos == [ridx, cidx]
       print " #{elem.to_s} ".on_green
     elsif selected_pos == [ridx, cidx]
@@ -125,35 +124,42 @@ class Board
   end
 
   def out_of_check(piece, color)
+    origin = piece.pos
     piece.moves.each do |possible_move|
       new_board = self.deep_dup
-      new_board.move(possible_move)
+      new_board.move(origin, possible_move)
       return true unless new_board.in_check?(color)
     end
 
     false
   end
 
-  def valid_move(origin, destination) #within rules, and doesn't leave in check
-    piece_to_move = grid[origin]
+  def valid_move?(origin, destination) #within rules, and doesn't leave in check
+    origin_row, origin_col = origin
+    dest_row, dest_col = destination
+    piece_to_move = grid[origin_row][origin_col]
+
     return false unless piece_to_move.legal_move?(destination)
 
     new_board = self.deep_dup
     new_board.move!(origin, destination)
-    return !new_board.in_check?
+    return !new_board.in_check?(piece_to_move.color)
   end
 
   def move(origin, destination)
-    move!(origin, destination) if valid_move(origin_destination)
+    move!(origin, destination) if valid_move?(origin, destination)
   end
 
   def move!(origin, destination) #no validity checking
-    piece_to_move = grid[origin]
+    origin_row, origin_col = origin
+    dest_row, dest_col = destination
+
+    piece_to_move = grid[origin_row][origin_col]
     raise InvalidMoveError if piece_to_move.empty?
-    grid[origin] = EmptySquare.new
+    grid[origin_row][origin_col] = EmptySquare.new
 
     piece_to_move.move_to(destination) #updates the Piece's pos
-    grid[destination] = piece_to_move  #updates the Board with that Piece
+    grid[dest_row][dest_col] = piece_to_move  #updates the Board with that Piece
   end
 
   def [](pos)
@@ -171,7 +177,6 @@ class Board
 
     grid.each_with_index do |row, ridx|
       row.each_with_index do |square, cidx|
-        p "#{ridx} | #{cidx} | #{grid[ridx][cidx]}"
         duped_pos = [ridx, cidx]
         duped_board[duped_pos] = square.dup(duped_board)
       end

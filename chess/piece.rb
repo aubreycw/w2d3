@@ -1,7 +1,8 @@
 require 'colorize'
 
 class Piece
-  attr_reader :color, :board, :pos, :id
+  attr_reader :color, :board, :id
+  attr_accessor :pos
 
   def initialize(pos, board, color)
     @pos = pos
@@ -34,11 +35,11 @@ class Piece
     self.class.new(self.pos, duped_board, self.color)
   end
 
-  protected
   def legal_move?(pos)
     move_on_board?(pos) && square_available?(pos)
   end
 
+  protected
   def move_on_board?(pos)
     pos.all? { |elem| elem.between?(0, 7) }
   end

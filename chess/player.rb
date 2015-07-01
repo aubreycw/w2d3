@@ -12,7 +12,7 @@ class HumanPlayer < Player
   def get_input
     begin
       input = $stdin.getch
-      raise EndGameError if input == "q"
+      raise "(╯°□°）╯︵ ┻━┻" if input == "q"
       unless ['w', 'a', 's', 'd', ' ', "\r"].include?(input)
         raise InputError.new
       end

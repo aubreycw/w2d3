@@ -20,7 +20,8 @@ class ChessGame
 
   def play
     play_turn until chessboard.checkmate?(current_player.color)
-    puts "Game over. #{player.last.color.capitalize} wins!"
+    chessboard.render
+    puts "Game over. #{players.last.color.capitalize} wins!"
   end
 
   def play_turn
@@ -31,8 +32,8 @@ class ChessGame
     end
     input = get_player_input(message)
 
-    if valid_move(input)
-      chessboard.move(input)
+    if chessboard.valid_move?(*input)
+      chessboard.move!(*input)
       next_player
     end
 
@@ -45,10 +46,8 @@ class ChessGame
     chessboard.reset_selection
     loop do
       input = input_from_cursor(message)
-      break if input
+      return input if input
     end
-
-    input
   end
 
   def input_from_cursor(message)
