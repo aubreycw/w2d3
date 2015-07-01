@@ -1,5 +1,4 @@
 class EmptySquare
-
   def empty?
     true
   end
@@ -10,5 +9,9 @@ class EmptySquare
 
   def to_s
     " "
+  end
+
+  def dup(duped_board)
+    EmptySquare.new
   end
 end

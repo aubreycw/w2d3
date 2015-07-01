@@ -2,10 +2,14 @@ require_relative 'piece'
 
 class Pawn < Piece
 
-  def initialize(pos, board, color)
-    super
-    @moved = false
+  def initialize(pos, board, color, moved = false)
+    super(pos, board, color)
+    @moved = moved
     @id = "♙"
+  end
+
+  def dup(duped_board)
+    Pawn.new(pos, duped_board, color, moved)
   end
 
   def moves
@@ -55,4 +59,7 @@ class Pawn < Piece
   def capture_diffs
     color == :black ? [[1, 1], [-1, 1]] : [[1, -1], [-1, -1]]
   end
+
+  private
+  attr_reader :pos, :board, :color, :moved
 end

@@ -14,6 +14,7 @@ class ChessGame
                  player2 = HumanPlayer.new(:black))
     @chessboard = Board.new
     @players = [player1, player2]
+    chessboard.populate_grid
     #TODO: save/load functionality
   end
 

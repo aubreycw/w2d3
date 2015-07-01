@@ -13,11 +13,11 @@ class HumanPlayer < Player
     begin
       input = $stdin.getch
       unless ['w', 'a', 's', 'd', ' ', "\r"].include?(input)
-        raise ArgumentError.new
+        raise InputError.new
       end
       input
 
-    rescue ArgumentError
+    rescue InputError
       p "rescued"
       retry
     end
@@ -25,4 +25,7 @@ class HumanPlayer < Player
 end
 
 class ComputerPlayer < Player
+end
+
+class InputError < ArgumentError
 end

@@ -26,6 +26,10 @@ class Piece
     raise "moves not implemented"
   end
 
+  def dup(duped_board)
+    self.class.new(self.pos, duped_board, self.color)
+  end
+
   protected
   def valid_move?(pos)
     move_on_board?(pos) && square_available?(pos)

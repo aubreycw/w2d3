@@ -11,7 +11,6 @@ class Board
     @grid = Array.new(8) {Array.new(8) { EmptySquare.new } }
     @cursor_pos= [0, 0]
     @selected_piece = nil
-    populate_grid
   end
 
   def move_cursor(diff)
@@ -94,4 +93,31 @@ class Board
     @grid[row][col] = input
   end
 
+  def deep_dup
+    duped_board = Board.new
+
+    grid.each_with_index do |row, ridx|
+      row.each_with_index do |square, cidx|
+        p "#{ridx} | #{cidx} | #{grid[ridx][cidx]}"
+        duped_pos = [ridx, cidx]
+        duped_board[duped_pos] = square.dup(duped_board)
+      end
+    end
+    duped_board
+  end
+
 end
+
+board = Board.new
+board.populate_grid
+
+duped_board = board.deep_dup
+king = King.new([3, 3], duped_board, :black)
+duped_board[[3, 3]] = king
+duped_board.render
+
+sleep(2)
+puts
+puts
+
+board.render
