@@ -89,17 +89,18 @@ class ChessGame
   end
 
   def save_game
-    print "Enter the name you want your savefile to have: "
+    print "Enter the name you want your savefile to have (q to cancel): "
     savename = "#{gets.chomp}.yml"
-
+    return if savename.downcase == "q.yml"
     File.open(savename, 'w') do |f|
-      puts self.to_yaml
+      f.puts self.to_yaml
     end
 
     puts "Game has been saved."
     sleep(1)
     return
   end
+
 
   private
   attr_accessor :chessboard, :players
@@ -108,5 +109,18 @@ end
 
  if __FILE__ == $PROGRAM_NAME
    puts "Welcome to Chess!"
-   ChessGame.new.play
+   input = nil
+   until ["1","2"].include?(input)
+     puts "1: begin new game"
+     puts "2: load existing game"
+     input = gets.chomp
+   end
+   if input == "1"
+     ChessGame.new.play
+   else
+     puts "what is the name of the file?"
+     file = "#{gets.chomp}.yml"
+     save = File.read(file)
+     YAML::load(save).play
+   end
  end

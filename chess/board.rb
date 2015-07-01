@@ -7,7 +7,7 @@ class Board
 
   def initialize
     # sentinel pattern
-    @sentinel = EmptySquare.new
+    #@blank = EmptySquare.new
     @grid = Array.new(8) {Array.new(8) { EmptySquare.new } }
     @cursor_pos= [0, 0]
     @selected_pos = nil
