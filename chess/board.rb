@@ -33,10 +33,12 @@ class Board
     @moves_at_selection = []
   end
 
-  def select_pos
-    @selected_pos = @cursor_pos
-    row, col = @selected_pos
-    @moves_at_selection = grid[row][col].moves
+  def select_pos(players_color)
+    row, col = @cursor_pos
+    if grid[row][col].color == players_color
+      @selected_pos = [row, col]
+      @moves_at_selection = grid[row][col].moves
+    end
   end
 
   def populate_grid
@@ -139,8 +141,8 @@ class Board
     dest_row, dest_col = destination
     piece_to_move = grid[origin_row][origin_col]
 
-    return false unless piece_to_move.legal_move?(destination)
-
+    return false unless piece_to_move.can_move_to?(destination)
+    
     new_board = self.deep_dup
     new_board.move!(origin, destination)
     return !new_board.in_check?(piece_to_move.color)

@@ -58,7 +58,7 @@ class ChessGame
 
     case input
     when ' '
-      chessboard.select_pos
+      chessboard.select_pos(current_player.color)
       return nil
     when "\r"
       return chessboard.cursor_info

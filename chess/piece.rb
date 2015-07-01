@@ -39,6 +39,10 @@ class Piece
     move_on_board?(pos) && square_available?(pos)
   end
 
+  def can_move_to?(pos)
+    self.moves.include?(pos)
+  end
+
   protected
   def move_on_board?(pos)
     pos.all? { |elem| elem.between?(0, 7) }

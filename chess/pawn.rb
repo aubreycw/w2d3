@@ -20,7 +20,7 @@ class Pawn < Piece
 
   def move_to(destination)
     super
-    moved = true
+    @moved = true
   end
 
   def capture_moves
