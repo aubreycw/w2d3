@@ -17,6 +17,11 @@ class Pawn < Piece
     capture_moves + normal_moves
   end
 
+  def move_to(destination)
+    super
+    moved = true
+  end
+
   def capture_moves
     moveset = capture_diffs
 

@@ -19,31 +19,47 @@ class ChessGame
   end
 
   def play
-    play_turn until false #fix later
+    play_turn until chessboard.checkmate?
     puts "Game over!"
   end
 
   def play_turn
     #move the cursor around, displaying moves for current player
     puts "It's #{current_player.color.capitalize}'s turn."
-    get_player_input
-    #user selects a piece
+    input = get_player_input
+
+    if valid_move(input)
+      chessboard.move(input)
+      next_player
+    end
+
     #highlight piece's moves until moved or de-selected
     #select a move and move the piece, also check for check/mate status
-    next_player
+
   end
 
   def get_player_input
+    loop do
+      input = input_from_cursor
+      break if input
+    end
+
+    input
+  end
+
+  def input_from_cursor
     chessboard.render
     input = current_player.get_input # Player#get_input rescues bad input
 
     case input
     when ' '
-      select_piece
+      chessboard.select_pos
+      return nil
     when "\r"
-      make_move
+      return chessboard.cursor_info
     else
       move_cursor(KEYBINDINGS[input])
+      return nil
     end
   end
 

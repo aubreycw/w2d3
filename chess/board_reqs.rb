@@ -5,3 +5,6 @@ require_relative 'bishop'
 require_relative 'knight'
 require_relative 'queen'
 require_relative 'king'
+
+class InvalidMoveError < StandardError
+end

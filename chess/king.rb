@@ -15,4 +15,8 @@ class King < SteppingPiece
     def king?
       true
     end
+
+    def king_location
+      @pos
+    end
 end

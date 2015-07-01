@@ -2,12 +2,12 @@ require_relative 'board_reqs'
 require 'colorize'
 
 class Board
-  attr_accessor :grid, :selected_piece, :cursor_pos, :selected_piece
+  attr_accessor :grid, :selected_pos, :cursor_pos, :selected_pos
 
   def initialize
     @grid = Array.new(8) {Array.new(8) { EmptySquare.new } }
     @cursor_pos= [0, 0]
-    @selected_piece = nil
+    @selected_pos = nil
   end
 
   def move_cursor(diff)
@@ -22,16 +22,20 @@ class Board
     end
   end
 
+  def cursor_info
+    [selected_pos, cursor_pos]
+  end
+
+  def select_pos
+    selected_pos = cursor_pos
+  end
+
   def populate_grid
     setup_pieces(:black, 0)
     setup_pawns(:black, 1)
 
     setup_pawns(:white, 6)
     setup_pieces(:white, 7)
-  end
-
-  def move_on_board?(pos)
-    pos.all? { |elem| elem.between?(0, 7) }
   end
 
   def setup_pawns(color, row)
@@ -73,11 +77,60 @@ class Board
 
     if cursor_pos == [ridx, cidx]
       print " #{elem.to_s} ".on_green
+    elsif selected_pos == [ridx, cidx]
+      print " #{elem.to_s} ".on_magenta
     elsif (ridx + cidx) % 2 == 0
       print " #{elem.to_s} ".on_blue
     else
       print " #{elem.to_s} ".on_red
     end
+  end
+
+  def move_on_board?(pos)
+    pos.all? { |elem| elem.between?(0, 7) }
+  end
+
+  def in_check?(color)
+    king = grid.flatten.select {|piece| piece.king? && piece.color == color}
+    king_pos = king.pos
+
+    enemies = grid.flatten.select {|piece| piece.color != color}
+    enemies.each { |enemy| return true if enemy.moves.include?(king_pos) }
+    false
+  end
+
+  def checkmate?(color)
+    return false unless in_check?(color)
+
+    allies = grid.flatten.select {|piece| piece.color == color}
+    allies.each { |ally| return false if out_of_check(ally, color)}
+    true
+  end
+
+  def out_of_check(piece, color)
+    piece.moves.each do |possible_move|
+      new_board = self.deep_dup
+      new_board.move(possible_move)
+      return true unless new_board.in_check?(color)
+    end
+
+    false
+  end
+
+  def valid_move(origin, destination) #within rules, and doesn't leave in check
+  end
+
+  def move(origin, destination)
+    move!(origin, destination) if valid_move(origin_destination)
+  end
+
+  def move!(origin, destination) #no validity checking
+    piece_to_move = grid[origin]
+    raise InvalidMoveError if piece_to_move.empty?
+    grid[origin] = EmptySquare.new
+
+    piece_to_move.move_to(destination)
+    grid[destination] = piece_to_move
   end
 
   def [](pos)
@@ -105,16 +158,16 @@ class Board
 
 end
 
-board = Board.new
-board.populate_grid
-
-duped_board = board.deep_dup
-king = King.new([3, 3], duped_board, :black)
-duped_board[[3, 3]] = king
-duped_board.render
-
-sleep(2)
-puts
-puts
-
-board.render
+# board = Board.new
+# board.populate_grid
+#
+# duped_board = board.deep_dup
+# king = King.new([3, 3], duped_board, :black)
+# duped_board[[3, 3]] = king
+# duped_board.render
+#
+# sleep(2)
+# puts
+# puts
+#
+# board.render

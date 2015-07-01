@@ -26,6 +26,10 @@ class Piece
     raise "moves not implemented"
   end
 
+  def move_to(destination)
+    self.pos = destination
+  end
+
   def dup(duped_board)
     self.class.new(self.pos, duped_board, self.color)
   end
