@@ -3,7 +3,7 @@ require 'colorize'
 
 class Board
   attr_accessor :grid, :selected_pos, :cursor_pos,
-                :selected_pos, :moves_at_selection
+                :moves_at_selection
 
   def initialize
     @grid = Array.new(8) {Array.new(8) { EmptySquare.new } }
@@ -28,9 +28,15 @@ class Board
     [selected_pos, cursor_pos]
   end
 
+  def reset_selection
+    @selected_pos = nil
+    @moves_at_selection = []
+  end
+
   def select_pos
-    selected_pos = cursor_pos
-    moves_at_selection = grid[selected_pos].moves
+    @selected_pos = @cursor_pos
+    row, col = @selected_pos
+    @moves_at_selection = grid[row][col].moves
   end
 
   def populate_grid
@@ -76,6 +82,10 @@ class Board
     puts "   a  b  c  d  e  f  g  h"
   end
 
+  def debug_info
+    puts "Cursor pos: #{cursor_pos}, Selected pos: #{selected_pos}"
+  end
+
   def print_elem(elem, ridx, cidx)
 
     if cursor_pos == [ridx, cidx]
@@ -85,7 +95,7 @@ class Board
     elsif moves_at_selection.include?([ridx, cidx])
       print " #{elem.to_s} ".on_yellow
 
-    # if not special, just make background checkerboard  
+    # if not special, just make background checkerboard
     elsif (ridx + cidx) % 2 == 0
       print " #{elem.to_s} ".on_blue
     else
@@ -98,7 +108,7 @@ class Board
   end
 
   def in_check?(color)
-    king = grid.flatten.select {|piece| piece.king? && piece.color == color}
+    king = grid.flatten.select {|piece| piece.king? && piece.color == color}.first
     king_pos = king.pos
 
     enemies = grid.flatten.select {|piece| piece.color != color}

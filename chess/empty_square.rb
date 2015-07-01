@@ -18,4 +18,13 @@ class EmptySquare
   def moves
     []
   end
+
+  def king?
+    false
+  end
+
+  def enemy?
+    false
+  end
+
 end
