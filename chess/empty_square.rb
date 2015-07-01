@@ -14,4 +14,8 @@ class EmptySquare
   def dup(duped_board)
     EmptySquare.new
   end
+
+  def moves
+    []
+  end
 end

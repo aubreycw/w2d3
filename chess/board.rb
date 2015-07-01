@@ -2,12 +2,14 @@ require_relative 'board_reqs'
 require 'colorize'
 
 class Board
-  attr_accessor :grid, :selected_pos, :cursor_pos, :selected_pos
+  attr_accessor :grid, :selected_pos, :cursor_pos,
+                :selected_pos, :moves_at_selection
 
   def initialize
     @grid = Array.new(8) {Array.new(8) { EmptySquare.new } }
     @cursor_pos= [0, 0]
     @selected_pos = nil
+    @moves_at_selection = []
   end
 
   def move_cursor(diff)
@@ -28,6 +30,7 @@ class Board
 
   def select_pos
     selected_pos = cursor_pos
+    moves_at_selection = grid[selected_pos].moves
   end
 
   def populate_grid
@@ -79,6 +82,10 @@ class Board
       print " #{elem.to_s} ".on_green
     elsif selected_pos == [ridx, cidx]
       print " #{elem.to_s} ".on_magenta
+    elsif moves_at_selection.include?([ridx, cidx])
+      print " #{elem.to_s} ".on_yellow
+
+    # if not special, just make background checkerboard  
     elsif (ridx + cidx) % 2 == 0
       print " #{elem.to_s} ".on_blue
     else

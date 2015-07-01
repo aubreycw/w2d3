@@ -25,8 +25,11 @@ class ChessGame
 
   def play_turn
     #move the cursor around, displaying moves for current player
-    puts "It's #{current_player.color.capitalize}'s turn."
-    input = get_player_input
+    message = "It's #{current_player.color.capitalize}'s turn."
+    if chessboard.in_check?(current_player.color)
+      message += "\n You are currently in check "
+    end
+    input = get_player_input(message)
 
     if valid_move(input)
       chessboard.move(input)
@@ -38,17 +41,18 @@ class ChessGame
 
   end
 
-  def get_player_input
+  def get_player_input(message)
     loop do
-      input = input_from_cursor
+      input = input_from_cursor(message)
       break if input
     end
 
     input
   end
 
-  def input_from_cursor
+  def input_from_cursor(message)
     chessboard.render
+    puts message
     input = current_player.get_input # Player#get_input rescues bad input
 
     case input
