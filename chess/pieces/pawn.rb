@@ -64,6 +64,6 @@ class Pawn < Piece
   end
 
   def capture_diffs
-    color == :black ? [[1, 1], [-1, 1]] : [[1, -1], [-1, -1]]
+    color == :black ? [[1, 1], [1, -1]] : [[-1, 1], [-1, -1]]
   end
 end
