@@ -35,7 +35,7 @@ class Piece
   end
 
   protected
-  def valid_move?(pos)
+  def legal_move?(pos)
     move_on_board?(pos) && square_available?(pos)
   end
 

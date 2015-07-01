@@ -11,7 +11,7 @@ class SteppingPiece < Piece
 
     self.class::MOVE_DIFFS.each do |drow, dcol|
       new_move = [row + drow, col + dcol]
-      all_moves << new_move if valid_move?(new_move)
+      all_moves << new_move if legal_move?(new_move)
     end
 
     all_moves

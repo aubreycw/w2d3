@@ -15,7 +15,7 @@ class SlidingPiece < Piece
 
       while move_on_board?(new_pos) && board[new_pos].empty?
         row, col = new_pos
-        all_moves << new_pos if valid_move?(new_pos)     # for empty squares
+        all_moves << new_pos if legal_move?(new_pos)     # for empty squares
         new_pos = [row + drow, col + dcol]
       end
 

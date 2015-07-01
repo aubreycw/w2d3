@@ -118,6 +118,12 @@ class Board
   end
 
   def valid_move(origin, destination) #within rules, and doesn't leave in check
+    piece_to_move = grid[origin]
+    return false unless piece_to_move.legal_move?(destination)
+
+    new_board = self.deep_dup
+    new_board.move!(origin, destination)
+    return !new_board.in_check?
   end
 
   def move(origin, destination)
@@ -129,8 +135,8 @@ class Board
     raise InvalidMoveError if piece_to_move.empty?
     grid[origin] = EmptySquare.new
 
-    piece_to_move.move_to(destination)
-    grid[destination] = piece_to_move
+    piece_to_move.move_to(destination) #updates the Piece's pos
+    grid[destination] = piece_to_move  #updates the Board with that Piece
   end
 
   def [](pos)

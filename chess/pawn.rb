@@ -45,7 +45,7 @@ class Pawn < Piece
 
     moveset.each do |drow, dcol|
       new_pos = [row + drow, col + dcol]
-      if board[pos].empty? && move_on_board(pos) #can't use valid_move?
+      if board[pos].empty? && move_on_board(pos) #can't use legal_move?
         all_moves << new_pos
       end
     end
