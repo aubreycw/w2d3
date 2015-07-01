@@ -5,13 +5,26 @@ require_relative 'pawn'
 require 'colorize'
 
 class Board
-  attr_accessor :grid
+  attr_accessor :grid, :selected_piece, :cursor_pos, :selected_piece
 
   def initialize
     @grid = Array.new(8) {Array.new(8) { EmptySquare.new } }
+    @cursor_pos= [0, 0]
+    @selected_piece = nil
     populate_grid
   end
 
+  def move_cursor(diff)
+    p cursor_pos
+    drow, dcol = diff
+    row, col = cursor_pos
+
+    new_pos = [row + drow, col + dcol]
+    if self.move_on_board?(new_pos)
+      p new_pos
+      self.cursor_pos = new_pos
+    end
+  end
 
   def populate_grid
     setup_pieces(:black, 0)
@@ -19,6 +32,10 @@ class Board
 
     setup_pawns(:white, 6)
     setup_pieces(:white, 7)
+  end
+
+  def move_on_board?(pos)
+    pos.all? { |elem| elem.between?(0, 7) }
   end
 
   def setup_pawns(color, row)
@@ -43,7 +60,7 @@ class Board
   end
 
   def render
-
+    system("clear")
     @grid.each_with_index do |row, ridx|
       print (ridx + 1).to_s + " "
       row.each_with_index do |elem, cidx|
@@ -53,11 +70,14 @@ class Board
       puts
     end
 
-    puts "  a  b  c  d  e  f  g  h"
+    puts "   a  b  c  d  e  f  g  h"
   end
 
   def print_elem(elem, ridx, cidx)
-    if (ridx + cidx) % 2 == 0
+
+    if cursor_pos == [ridx, cidx]
+      print " #{elem.to_s} ".on_green
+    elsif (ridx + cidx) % 2 == 0
       print " #{elem.to_s} ".on_blue
     else
       print " #{elem.to_s} ".on_red

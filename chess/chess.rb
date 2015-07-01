@@ -1,24 +1,53 @@
 require_relative 'player'
 require_relative 'board'
+require 'io/console'
+
+KEYBINDINGS = { #char => pos or action
+  'w' => [-1, 0], 'a' => [0, -1],
+  's' => [1, 0],  'd' => [0, 1]
+  # ' ' and '\r' key to method names?
+}
 
 class ChessGame
 
-  def initialize(player1 = Player.new(:white),
-                 player2 = Player.new(:black))
+  def initialize(player1 = HumanPlayer.new(:white),
+                 player2 = HumanPlayer.new(:black))
     @chessboard = Board.new
     @players = [player1, player2]
     #TODO: save/load functionality
   end
 
   def play
-    play_turn until over?
+    play_turn until false #fix later
     puts "Game over!"
   end
 
   def play_turn
-    input = current_player.make_move(pos, dest)
-    chessboard.move(input)
+    #move the cursor around, displaying moves for current player
+    puts "It's #{current_player.color.capitalize}'s turn."
+    get_player_input
+    #user selects a piece
+    #highlight piece's moves until moved or de-selected
+    #select a move and move the piece, also check for check/mate status
     next_player
+  end
+
+  def get_player_input
+    chessboard.render
+    input = current_player.get_input # Player#get_input rescues bad input
+
+    case input
+    when ' '
+      select_piece
+    when "\r"
+      make_move
+    else
+      move_cursor(KEYBINDINGS[input])
+    end
+  end
+
+  def move_cursor(diff)
+    chessboard.move_cursor(diff)
   end
 
   def over?
@@ -38,26 +67,7 @@ class ChessGame
 end
 
 
-# if __FILE__ == $PROGRAM_NAME
-#   puts "Welcome to Chess!"
-#   ChessGame.new.play
-# end
-
-board = Board.new
-board.render
-# p1 = Knight.new([2, 2], board, :black)
-# queen = Queen.new([3, 3], board, :black)
-# p2 = Knight.new([4, 4], board, :white)
-# k1 = Knight.new([0, 0], board, :white)
-# p3 = Knight.new([1, 5], board, :white)
-# p4 = Knight.new([3, 6], board, :white)
-# king = King.new([6, 6], board, :white)
-#
-# board[[3,3]]= queen
-# board[[2,2]]= p1
-# board[[4,4]]= p2
-# board[[1,5]]= p3
-# board[[3,6]] = p4
-# board[[0,0]]= k1
-# board[[6,6]]= king
-# p queen.moves
+ if __FILE__ == $PROGRAM_NAME
+   puts "Welcome to Chess!"
+   ChessGame.new.play
+ end

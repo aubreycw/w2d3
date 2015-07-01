@@ -7,7 +7,7 @@ class Piece
     @pos = pos
     @color = color
     @board = board
-    @id = "_"
+    @id = ' '
   end
 
   def empty?
