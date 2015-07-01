@@ -2,7 +2,7 @@ require_relative 'empty_square'
 require_relative 'sliding_piece'
 require_relative 'stepping_piece'
 require_relative 'pawn'
-
+require 'colorize'
 
 class Board
   attr_accessor :grid
@@ -43,16 +43,25 @@ class Board
   end
 
   def render
-    rank = 1
 
-    @grid.each do |row|
-      print rank.to_s + " "
-      row.each { |elem| print elem.to_s + " " }
+    @grid.each_with_index do |row, ridx|
+      print (ridx + 1).to_s + " "
+      row.each_with_index do |elem, cidx|
+        print_elem(elem, ridx, cidx)
+      end
+
       puts
-      rank += 1
     end
 
-    puts "  a b c d e f g h"
+    puts "  a  b  c  d  e  f  g  h"
+  end
+
+  def print_elem(elem, ridx, cidx)
+    if (ridx + cidx) % 2 == 0
+      print " #{elem.to_s} ".on_blue
+    else
+      print " #{elem.to_s} ".on_red
+    end
   end
 
   def [](pos)
