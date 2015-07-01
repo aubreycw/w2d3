@@ -26,31 +26,3 @@ class SlidingPiece < Piece
   end
 
 end
-
-class Rook < SlidingPiece
-  MOVE_DIFFS = [[0, 1], [0, -1], [1, 0], [-1, 0]]
-
-  def initialize(pos, board, color)
-    super
-    @id = "♖"
-  end
-end
-
-class Bishop < SlidingPiece
-  MOVE_DIFFS = [[1, 1], [1, -1], [-1, 1], [-1, -1]]
-
-  def initialize(pos, board, color)
-    super
-    @id = "♗"
-  end
-end
-
-class Queen < SlidingPiece
-  MOVE_DIFFS = [[1, 1], [1, -1], [-1, 1], [-1, -1],
-                [0, 1], [0, -1], [1, 0], [-1, 0]]
-
-  def initialize(pos, board, color)
-    super
-    @id = "♕"
-  end
-end

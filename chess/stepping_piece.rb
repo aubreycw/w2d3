@@ -17,31 +17,3 @@ class SteppingPiece < Piece
     all_moves
   end
 end
-
-
-class King < SteppingPiece
-  MOVE_DIFFS = [
-      [-1, -1], [-1, 0], [-1, 1],
-      [ 0, -1],          [ 0, 1],
-      [ 1, -1], [ 1, 0], [ 1, 1]
-    ]
-
-    def initialize(pos, board, color)
-      super
-      @id = "♔"
-    end
-
-    def king?
-      true
-    end
-end
-
-class Knight < SteppingPiece
-  MOVE_DIFFS = [[1, 2], [1, -2], [-1, 2], [-1, -2],
-                [2, 1], [2, -1], [-2, 1], [-2, -1]]
-
-  def initialize(pos, board, color)
-    super
-    @id = "♘"
-  end
-end
