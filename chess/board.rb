@@ -6,6 +6,8 @@ class Board
                 :moves_at_selection
 
   def initialize
+    # sentinel pattern
+    @sentinel = EmptySquare.new
     @grid = Array.new(8) {Array.new(8) { EmptySquare.new } }
     @cursor_pos= [0, 0]
     @selected_pos = nil
@@ -113,14 +115,15 @@ class Board
     king_pos = king.pos
 
     enemies = grid.flatten.select {|piece| piece.color != color}
-    enemies.each { |enemy| return true if enemy.moves.include?(king_pos) }
-    false
+
+    enemies.any? { |enemy| enemy.moves.include?(king_pos) }
   end
 
   def checkmate?(color)
     return false unless in_check?(color)
 
     allies = grid.flatten.select {|piece| piece.color == color}
+    # TODO any? none?
     allies.each { |ally| return false if out_of_check(ally, color)}
     true
   end
@@ -139,10 +142,10 @@ class Board
   def valid_move?(origin, destination) #within rules, and doesn't leave in check
     origin_row, origin_col = origin
     dest_row, dest_col = destination
-    piece_to_move = grid[origin_row][origin_col]
+    piece_to_move = self[origin] # grid[origin_row][origin_col]
 
     return false unless piece_to_move.can_move_to?(destination)
-    
+
     new_board = self.deep_dup
     new_board.move!(origin, destination)
     return !new_board.in_check?(piece_to_move.color)

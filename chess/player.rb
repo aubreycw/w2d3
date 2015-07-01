@@ -12,14 +12,13 @@ class HumanPlayer < Player
   def get_input
     begin
       input = $stdin.getch
-      raise "(╯°□°）╯︵ ┻━┻" if input == "q"
-      unless ['w', 'a', 's', 'd', ' ', "\r"].include?(input)
+      raise "\n(╯°□°)╯ ︵ ┻━┻" if input == "p"
+      unless ['w', 'a', 's', 'd', ' ', "\r", "q"].include?(input)
         raise InputError.new
       end
       input
 
     rescue InputError
-      p "rescued"
       retry
     end
   end

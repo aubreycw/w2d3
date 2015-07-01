@@ -1,6 +1,7 @@
-require_relative 'piece'
+require_relative '../piece'
 
 class Pawn < Piece
+
   attr_reader :board, :color
   attr_accessor :pos, :moved
 

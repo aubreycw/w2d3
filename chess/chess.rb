@@ -1,6 +1,7 @@
 require_relative 'player'
 require_relative 'board'
 require 'io/console'
+require 'yaml'
 
 KEYBINDINGS = { #char => pos or action
   'w' => [-1, 0], 'a' => [0, -1],
@@ -19,7 +20,7 @@ class ChessGame
   end
 
   def play
-    play_turn until chessboard.checkmate?(current_player.color)
+    play_turn until over?
     chessboard.render
     puts "Game over. #{players.last.color.capitalize} wins!"
   end
@@ -62,6 +63,9 @@ class ChessGame
       return nil
     when "\r"
       return chessboard.cursor_info
+    when "q"
+      save_game
+      return nil
     else
       move_cursor(KEYBINDINGS[input])
       return nil
@@ -73,7 +77,7 @@ class ChessGame
   end
 
   def over?
-    @board.checkmate?(current_player.color)
+    chessboard.checkmate?(current_player.color)
   end
 
   def next_player
@@ -82,6 +86,19 @@ class ChessGame
 
   def current_player
     players.first
+  end
+
+  def save_game
+    print "Enter the name you want your savefile to have: "
+    savename = "#{gets.chomp}.yml"
+
+    File.open(savename, 'w') do |f|
+      puts self.to_yaml
+    end
+
+    puts "Game has been saved."
+    sleep(1)
+    return
   end
 
   private
