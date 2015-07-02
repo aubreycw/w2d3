@@ -55,4 +55,8 @@ class Piece
   def enemy?(pos)
     move_on_board?(pos) && board[pos].color != self.color && !board[pos].empty?
   end
+
+  def rook_unmoved?
+    false
+  end
 end

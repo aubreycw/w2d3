@@ -28,8 +28,10 @@ class ChessGame
   def play_turn
     #move the cursor around, displaying moves for current player
     message = "It's #{current_player.color.capitalize}'s turn."
+    message += "\nWASD to move, Space to select, Enter to make move."
+    message += "\nQ to save and P to quit."
     if chessboard.in_check?(current_player.color)
-      message += "\n You are currently in check "
+      message += "\nYou are currently in check."
     end
     input = get_player_input(message)
 

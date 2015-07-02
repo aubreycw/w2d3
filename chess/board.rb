@@ -115,8 +115,9 @@ class Board
     king_pos = king.pos
 
     enemies = grid.flatten.select {|piece| piece.color != color}
-
-    enemies.any? { |enemy| enemy.moves.include?(king_pos) }
+    enemies.any? do |enemy|
+      enemy.moves.include?(king_pos) unless enemy.king?
+    end
   end
 
   def checkmate?(color)
@@ -167,6 +168,17 @@ class Board
     grid[dest_row][dest_col] = piece_to_move  #updates the Board with that Piece
   end
 
+  def castle!(king_dest)
+    kd_row, kd_col = king_dest
+    rook_origin_row = kd_row
+    rook_dest_row = kd_row
+
+    rook_origin_col = kd_col == 6 ? 7 : 0
+    rook_dest_col = kd_col == 6 ? 5 : 3
+
+    move!([rook_origin_row, rook_origin_col], [rook_dest_row, rook_dest_col])
+  end
+
   def [](pos)
     row, col = pos
     @grid[row][col]
@@ -188,19 +200,4 @@ class Board
     end
     duped_board
   end
-
 end
-
-# board = Board.new
-# board.populate_grid
-#
-# duped_board = board.deep_dup
-# king = King.new([3, 3], duped_board, :black)
-# duped_board[[3, 3]] = king
-# duped_board.render
-#
-# sleep(2)
-# puts
-# puts
-#
-# board.render

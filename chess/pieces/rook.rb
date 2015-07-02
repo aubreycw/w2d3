@@ -14,4 +14,8 @@ class Rook < SlidingPiece
     @moved = true
   end
 
+  def rook_unmoved?
+    true unless @moved
+  end
+
 end

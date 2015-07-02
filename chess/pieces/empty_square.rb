@@ -27,4 +27,8 @@ class EmptySquare
     false
   end
 
+  def rook_unmoved?
+    false
+  end
+
 end
