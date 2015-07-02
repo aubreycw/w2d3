@@ -1,7 +1,6 @@
 require_relative '../piece'
 
 class SlidingPiece < Piece
-
   def initialize(pos, board, color)
     super
   end
@@ -24,5 +23,4 @@ class SlidingPiece < Piece
 
     all_moves
   end
-
 end

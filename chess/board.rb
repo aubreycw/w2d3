@@ -6,8 +6,6 @@ class Board
                 :moves_at_selection
 
   def initialize
-    # sentinel pattern
-    #@blank = EmptySquare.new
     @grid = Array.new(8) {Array.new(8) { EmptySquare.new } }
     @cursor_pos= [0, 0]
     @selected_pos = nil
@@ -15,15 +13,11 @@ class Board
   end
 
   def move_cursor(diff)
-    p cursor_pos
     drow, dcol = diff
     row, col = cursor_pos
 
     new_pos = [row + drow, col + dcol]
-    if self.move_on_board?(new_pos)
-      p new_pos
-      self.cursor_pos = new_pos
-    end
+    self.cursor_pos = new_pos if self.move_on_board?(new_pos)
   end
 
   def cursor_info
@@ -36,10 +30,9 @@ class Board
   end
 
   def select_pos(players_color)
-    row, col = @cursor_pos
-    if grid[row][col].color == players_color
-      @selected_pos = [row, col]
-      @moves_at_selection = grid[row][col].moves
+    if self[@cursor_pos].color == players_color
+      @selected_pos = @cursor_pos
+      @moves_at_selection = self[@cursor_pos].moves
     end
   end
 

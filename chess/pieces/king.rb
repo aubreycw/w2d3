@@ -1,5 +1,4 @@
 require_relative 'stepping_piece'
-require 'byebug'
 
 class King < SteppingPiece
   MOVE_DIFFS = [
@@ -19,7 +18,6 @@ class King < SteppingPiece
       if [[0, 2], [0, 6], [7, 2], [7, 6]].include?(destination) && !@moved
         board.castle!(destination)
       end
-
       @moved = true
     end
 
@@ -43,7 +41,6 @@ class King < SteppingPiece
                     board[[krow, kcol - 3]].empty? &&
                     !board.in_check?(self.color)
 
-
          new_board = board.deep_dup
          new_board.move!([krow, kcol], [krow, kcol - 1])
          return [] if new_board.in_check?(self.color)
@@ -52,10 +49,10 @@ class King < SteppingPiece
          return [] if new_board.in_check?(self.color)
 
          return [[krow, kcol - 2]]
+
        else
          []
        end
-
     end
 
     def kingside_castle_location
@@ -73,6 +70,7 @@ class King < SteppingPiece
          return [] if new_board.in_check?(self.color)
 
          return [[krow, kcol + 2]]
+         
        else
          []
        end

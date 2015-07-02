@@ -1,7 +1,6 @@
 require_relative '../piece'
 
 class Pawn < Piece
-
   attr_reader :board, :color
   attr_accessor :pos, :moved
 
@@ -11,17 +10,13 @@ class Pawn < Piece
     @id = "♙"
   end
 
-  def dup(duped_board)
-    Pawn.new(pos, duped_board, color, moved)
+  def move_to(destination)
+    super
+    @moved = true
   end
 
   def moves
     capture_moves + normal_moves
-  end
-
-  def move_to(destination)
-    super
-    @moved = true
   end
 
   def capture_moves
@@ -47,7 +42,7 @@ class Pawn < Piece
 
     moveset.each do |drow, dcol|
       new_pos = [row + drow, col + dcol]
-      if board[new_pos].empty? && move_on_board?(new_pos) #can't use legal_move?
+      if board[new_pos].empty? && move_on_board?(new_pos)
         all_moves << new_pos
       end
     end
@@ -65,5 +60,9 @@ class Pawn < Piece
 
   def capture_diffs
     color == :black ? [[1, 1], [1, -1]] : [[-1, 1], [-1, -1]]
+  end
+
+  def dup(duped_board)
+    Pawn.new(pos, duped_board, color, moved)
   end
 end

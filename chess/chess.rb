@@ -3,26 +3,29 @@ require_relative 'board'
 require 'io/console'
 require 'yaml'
 
-KEYBINDINGS = { #char => pos or action
+KEYBINDINGS = {
   'w' => [-1, 0], 'a' => [0, -1],
   's' => [1, 0],  'd' => [0, 1]
-  # ' ' and '\r' key to method names?
 }
 
 class ChessGame
-
   def initialize(player1 = HumanPlayer.new(:white),
                  player2 = HumanPlayer.new(:black))
     @chessboard = Board.new
     @players = [player1, player2]
     chessboard.populate_grid
-    #TODO: save/load functionality
   end
 
   def play
-    play_turn until over?
-    chessboard.render
-    puts "Game over. #{players.last.color.capitalize} wins!"
+    begin
+      play_turn until over?
+      chessboard.render
+      puts "Game over. #{players.last.color.capitalize} wins!"
+
+    rescue QuitGame
+      puts "Thanks for playing."
+      return
+    end
   end
 
   def play_turn
@@ -30,6 +33,7 @@ class ChessGame
     message = "It's #{current_player.color.capitalize}'s turn."
     message += "\nWASD to move, Space to select, Enter to make move."
     message += "\nQ to save and P to quit."
+
     if chessboard.in_check?(current_player.color)
       message += "\nYou are currently in check."
     end
@@ -39,10 +43,6 @@ class ChessGame
       chessboard.move!(*input)
       next_player
     end
-
-    #highlight piece's moves until moved or de-selected
-    #select a move and move the piece, also check for check/mate status
-
   end
 
   def get_player_input(message)
@@ -57,19 +57,22 @@ class ChessGame
     chessboard.render
     chessboard.debug_info
     puts message
-    input = current_player.get_input # Player#get_input rescues bad input
 
+    input = current_player.get_input # Player#get_input rescues bad input
     case input
     when ' '
       chessboard.select_pos(current_player.color)
       return nil
+
     when "\r"
       result = chessboard.cursor_info
       return result unless result.first.nil?
       return nil
+
     when "q"
       save_game
       return nil
+
     else
       move_cursor(KEYBINDINGS[input])
       return nil
@@ -105,7 +108,6 @@ class ChessGame
     return
   end
 
-
   private
   attr_accessor :chessboard, :players
 end
@@ -119,6 +121,7 @@ end
      puts "2: load existing game"
      input = gets.chomp
    end
+   
    if input == "1"
      ChessGame.new.play
    else
