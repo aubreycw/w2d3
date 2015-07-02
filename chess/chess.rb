@@ -55,7 +55,7 @@ class ChessGame
 
   def input_from_cursor(message)
     chessboard.render
-    chessboard.debug_info
+    #chessboard.debug_info
     puts message
 
     input = current_player.get_input # Player#get_input rescues bad input
@@ -121,7 +121,7 @@ end
      puts "2: load existing game"
      input = gets.chomp
    end
-   
+
    if input == "1"
      ChessGame.new.play
    else

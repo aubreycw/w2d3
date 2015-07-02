@@ -30,16 +30,15 @@ class Board
   end
 
   def select_pos(players_color)
-    if self[@cursor_pos].color == players_color
-      @selected_pos = @cursor_pos
-      @moves_at_selection = self[@cursor_pos].moves
+    if self[cursor_pos].color == players_color
+      @selected_pos = cursor_pos
+      @moves_at_selection = self[cursor_pos].moves
     end
   end
 
   def populate_grid
     setup_pieces(:black, 0)
     setup_pawns(:black, 1)
-
     setup_pawns(:white, 6)
     setup_pieces(:white, 7)
   end
@@ -69,10 +68,10 @@ class Board
     system("clear")
     @grid.each_with_index do |row, ridx|
       print (ridx + 1).to_s + " "
+
       row.each_with_index do |elem, cidx|
         print_elem(elem, ridx, cidx)
       end
-
       puts
     end
 
@@ -84,18 +83,20 @@ class Board
   end
 
   def print_elem(elem, ridx, cidx)
+    square = " #{elem.to_s} "
+
     if cursor_pos == [ridx, cidx]
-      print " #{elem.to_s} ".on_green
+      print square.on_green
     elsif selected_pos == [ridx, cidx]
-      print " #{elem.to_s} ".on_magenta
+      print square.on_magenta
     elsif moves_at_selection.include?([ridx, cidx])
-      print " #{elem.to_s} ".on_yellow
+      print square.on_yellow
 
     # if not special, just make background checkerboard
     elsif (ridx + cidx) % 2 == 0
-      print " #{elem.to_s} ".on_blue
+      print square.on_blue
     else
-      print " #{elem.to_s} ".on_red
+      print square.on_red
     end
   end
 
@@ -104,10 +105,10 @@ class Board
   end
 
   def in_check?(color)
-    king = grid.flatten.select {|piece| piece.king? && piece.color == color}.first
+    king = grid.flatten.select { |piece| piece.king? && piece.color == color }.first
     king_pos = king.pos
 
-    enemies = grid.flatten.select {|piece| piece.color != color}
+    enemies = grid.flatten.select { |piece| piece.color != color }
     enemies.any? do |enemy|
       enemy.moves.include?(king_pos) unless enemy.king?
     end
@@ -115,31 +116,22 @@ class Board
 
   def checkmate?(color)
     return false unless in_check?(color)
-
-    allies = grid.flatten.select {|piece| piece.color == color}
-    # TODO any? none?
-    allies.each { |ally| return false if out_of_check(ally, color)}
-    true
+    allies = grid.flatten.select { |piece| piece.color == color }
+    allies.none? { |ally| out_of_check(ally, color) }
   end
 
   def out_of_check(piece, color)
     origin = piece.pos
-    piece.moves.each do |possible_move|
+    piece.moves.any? do |possible_move|
       new_board = self.deep_dup
       new_board.move(origin, possible_move)
-      return true unless new_board.in_check?(color)
+      !new_board.in_check?(color)
     end
-
-    false
   end
 
   def valid_move?(origin, destination) #within rules, and doesn't leave in check
-    origin_row, origin_col = origin
-    dest_row, dest_col = destination
-    piece_to_move = self[origin] # grid[origin_row][origin_col]
-
+    piece_to_move = self[origin]
     return false unless piece_to_move.can_move_to?(destination)
-
     new_board = self.deep_dup
     new_board.move!(origin, destination)
     return !new_board.in_check?(piece_to_move.color)
@@ -149,27 +141,21 @@ class Board
     move!(origin, destination) if valid_move?(origin, destination)
   end
 
-  def move!(origin, destination) #no validity checking
-    origin_row, origin_col = origin
-    dest_row, dest_col = destination
-
-    piece_to_move = grid[origin_row][origin_col]
+  def move!(origin, destination) # no validity checking
+    piece_to_move = self[origin]
     raise InvalidMoveError if piece_to_move.empty?
-    grid[origin_row][origin_col] = EmptySquare.new
+    self[origin] = EmptySquare.new
 
-    piece_to_move.move_to(destination) #updates the Piece's pos
-    grid[dest_row][dest_col] = piece_to_move  #updates the Board with that Piece
+    piece_to_move.move_to(destination) # updates the piece's pos
+    self[destination] = piece_to_move  # updates the board with that piece
   end
 
   def castle!(king_dest)
     kd_row, kd_col = king_dest
-    rook_origin_row = kd_row
-    rook_dest_row = kd_row
-
     rook_origin_col = kd_col == 6 ? 7 : 0
     rook_dest_col = kd_col == 6 ? 5 : 3
 
-    move!([rook_origin_row, rook_origin_col], [rook_dest_row, rook_dest_col])
+    move!([kd_row, rook_origin_col], [kd_row, rook_dest_col])
   end
 
   def [](pos)
@@ -191,6 +177,7 @@ class Board
         duped_board[duped_pos] = square.dup(duped_board)
       end
     end
+    
     duped_board
   end
 end
