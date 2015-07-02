@@ -64,7 +64,9 @@ class ChessGame
       chessboard.select_pos(current_player.color)
       return nil
     when "\r"
-      return chessboard.cursor_info
+      result = chessboard.cursor_info
+      return result unless result.first.nil?
+      return nil
     when "q"
       save_game
       return nil
